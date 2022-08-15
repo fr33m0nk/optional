@@ -127,6 +127,16 @@ Or in your namespace as:
 ### `=`
 - Returns a boolean
 - Checks equality for Optionals
+#### Usage:
+```clojure
+(require '[fr33m0nk.optional :as optional])
+
+(optional/= (optional/option-of 10) (optional/option-of 10) (optional/option-of 10))
+;;=> true
+
+(optional/= (optional/option-of 10) (optional/option-of))
+;;=> false
+```
 
 ### `get`
 - Return `nil` for empty Optional
