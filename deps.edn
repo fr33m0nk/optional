@@ -5,10 +5,10 @@
   :test
   {:extra-paths ["src" "test"]
    :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}
-                io.github.cognitect-labs/test-runner
-                {:git/tag "v0.5.0" :git/sha "48c3c67"}}
-   :exec-fn cognitect.test-runner.api/test
-   :exec-args {}}
+                lambdaisland/kaocha {:mvn/version "1.69.1069"}}
+   :exec-fn kaocha.runner/exec-fn
+   :exec-args {}
+   :main-opts ["-m" "kaocha.runner"]}
   :build {:deps {io.github.seancorfield/build-clj
                  {:git/tag "v0.8.3" :git/sha "7ac1f8d"}}
           :ns-default build}}}
