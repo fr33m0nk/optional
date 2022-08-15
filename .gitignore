@@ -37,3 +37,6 @@ pom.xml.asc
 *.swp
 *~
 /checkouts
+.keep
+CHANGELOG.md
+intro.md
