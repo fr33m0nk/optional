@@ -6,18 +6,18 @@
 All functions are available through the `fr33m0nk.optional` and `fr33m0nk.utility` namespaces. Add the following to your project dependencies:
 - CLI/deps.edn dependency information:
 ```clojure
-net.clojars.fr33m0nk/optional {:mvn/version "0.1.2"}
+net.clojars.fr33m0nk/optional {:mvn/version "0.1.3"}
 ```
 - Leningen/Boot
 ```clojure
-[net.clojars.fr33m0nk/optional "0.1.2"]
+[net.clojars.fr33m0nk/optional "0.1.3"]
 ```
 - Maven:
 ```xml
 <dependency>
     <groupId>net.clojars.fr33m0nk</groupId>
     <artifactId>optional</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
 </dependency>
 ```
 Require at the REPL with:
@@ -40,7 +40,7 @@ Or in your namespace as:
 
 | Name                                                                    | Description                                                                                                                                                                    |
 |-------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`fr33m0nk.optional/option-of`](#option-of)                             | Returns Optional of supplied value                                                                                                                                             |
+| [`fr33m0nk.optional/optional-of`](#optional-of)                         | Returns Optional of supplied value                                                                                                                                             |
 | [`fr33m0nk.optional/warp-return-in-optional`](#warp-return-in-optional) | Wraps Clojure fn `try catch` block to return Optional values                                                                                                                   |
 | [`fr33m0nk.optional/has-value?`](#has-value?)                           | Returns boolean based on whether Optional has value or is empty                                                                                                                |
 | [`fr33m0nk.optional/=`](#=)                                             | Like `core/=` for Optionals                                                                                                                                                    |
@@ -63,7 +63,7 @@ Or in your namespace as:
 (ns fr33m0nk.optional)
 ```
 
-### `option-of`
+### `optional-of`
 - Returns an Optional 
 - Zero arity version returns an empty Optional 
 - Single arity version returns an Optional of value
@@ -72,10 +72,10 @@ Or in your namespace as:
 ```clojure
 (require '[fr33m0nk.optional :as optional])
 
-(optional/option-of 10)
+(optional/optional-of 10)
 ;;=> #object[java.util.Optional 0x21bf3689 "Optional[10]"]
 
-(optional/option-of)
+(optional/optional-of)
 ;;=> #object[java.util.Optional 0x1341289b "Optional.empty"]
 ```
 

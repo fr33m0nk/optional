@@ -4,12 +4,12 @@
   (:import (java.util Optional))
   (:refer-clojure :exclude [= get filter map]))
 
-(defn ^Optional option-of
+(defn ^Optional optional-of
   "returns an Optional
   Zero arity version returns an empty Optional
   Single arity version returns an Optional of value"
   ([]
-   (option-of nil))
+   (optional-of nil))
   ([value]
    (if value
      (Optional/of value)
@@ -111,9 +111,9 @@
   ([f logger log-exception-message]
    (fn [& args]
      (try
-       (option-of (apply f args))
+       (optional-of (apply f args))
        (catch Exception ex
          (when logger
            (let [logging-args (filterv some? [log-exception-message (util/exception->map ex)])]
              (apply logger logging-args)))
-         (option-of))))))
+         (optional-of))))))
