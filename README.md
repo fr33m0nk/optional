@@ -6,18 +6,18 @@
 All functions are available through the `fr33m0nk.optional` and `fr33m0nk.utility` namespaces. Add the following to your project dependencies:
 - CLI/deps.edn dependency information:
 ```clojure
-fr33m0nk/optional {:mvn/version "0.1.2"}
+net.clojars.fr33m0nk/optional {:mvn/version "0.1.2"}
 ```
-- Leningen
+- Leningen/Boot
 ```clojure
-[fr33m0nk/optional "0.1.2"]
+[net.clojars.fr33m0nk/optional "0.1.2"]
 ```
 - Maven:
 ```xml
 <dependency>
-  <groupId>fr33m0nk/optional</groupId>
-  <artifactId>optional</artifactId>
-  <version>0.1.2</version>
+    <groupId>net.clojars.fr33m0nk</groupId>
+    <artifactId>optional</artifactId>
+    <version>0.1.2</version>
 </dependency>
 ```
 Require at the REPL with:
