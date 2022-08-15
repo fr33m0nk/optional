@@ -142,6 +142,16 @@ Or in your namespace as:
 - Return `nil` for empty Optional
 - Returns value contained in Optional
 - Two arity version also takes another value that would be returned if Optional is empty
+#### Usage:
+```clojure
+(require '[fr33m0nk.optional :as optional])
+
+(optional/get (optional/option-of 10))
+;;=> 10
+
+(optional/get (optional/option-of))
+;;=> nil
+```
 
 ### `filter`
 - Returns empty Optional if predicate evaluates to false or predicate throws Exception 
