@@ -65,7 +65,7 @@ Or in your namespace as:
 - Zero arity version returns an empty Optional 
 - Single arity version returns an Optional of value
 - If `nil` is supplied as value, returns an empty Optional
-- Usage:
+#### Usage:
 ```clojure
 (require '[fr33m0nk.optional :as optional])
 
@@ -86,7 +86,7 @@ Or in your namespace as:
 (def logger-fn (fr33m0nk.utility/macro->fn clojure.tools.logging/info))
 ```
 - The reason is Clojure functions can't take macros as argument
-- Usage
+#### Usage:
 ```clojure
 (require '[fr33m0nk.optional :as optional]
          '[fr33m0nk.utility :as optional-util]
@@ -113,6 +113,16 @@ Or in your namespace as:
 ### `has-value?`
 - Returns a boolean
 - Checks if supplied Optional has a value or is empty
+#### Usage:
+```clojure
+(require '[fr33m0nk.optional :as optional])
+
+(optional/has-value? (optional/option-of 10))
+;;=> true
+
+(optional/has-value? (optional/option-of))
+;;=> false
+```
 
 ### `=`
 - Returns a boolean
