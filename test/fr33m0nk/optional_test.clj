@@ -70,7 +70,8 @@
     (is (= [2 3 nil]
            (->> [1 2 "3"]
                 (map op/optional-of)
-                (map #(op/map inc % (util/macro->fn clojure.tools.logging/info) "Exception occurred"))
+                #_(map #(op/map inc % (util/macro->fn clojure.tools.logging/info) "Exception occurred")) ;; A logger macro can be used like this
+                (map #(op/map inc % println "Exception occurred")) ;; A logger function can be used like this
                 (map op/get)))
         "Transforms collection of Optionals and safely executes inc on values contained in Optionals.
         If transforming fn results in exception, empty Optional is returned which is mapped to nil by op/get.
@@ -191,8 +192,12 @@
 
 (deftest warp-return-in-optional-test
   (testing "wraps a unsafe function and returns Optional of value or empty Optional"
-    (let [log-fn (util/macro->fn clojure.tools.logging/info)
-          wrapped-inc (op/warp-return-in-optional inc log-fn)]
+    (let [
+          ;;Following is the example of how a logger macro can be used
+          ;log-fn (util/macro->fn clojure.tools.logging/info)
+          ;wrapped-inc (op/warp-return-in-optional inc log-fn)
+          ;; Following is the example of using logging fn
+          wrapped-inc (op/warp-return-in-optional inc println)]
       (is (op/= (op/optional-of 10) (wrapped-inc 9))
           "Returns Optional of value if fn execution is successful")
 

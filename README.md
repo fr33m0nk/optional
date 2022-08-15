@@ -6,18 +6,18 @@
 All functions are available through the `fr33m0nk.optional` and `fr33m0nk.utility` namespaces. Add the following to your project dependencies:
 - CLI/deps.edn dependency information:
 ```clojure
-net.clojars.fr33m0nk/optional {:mvn/version "0.1.3"}
+net.clojars.fr33m0nk/optional {:mvn/version "0.1.4"}
 ```
 - Leningen/Boot
 ```clojure
-[net.clojars.fr33m0nk/optional "0.1.3"]
+[net.clojars.fr33m0nk/optional "0.1.4"]
 ```
 - Maven:
 ```xml
 <dependency>
     <groupId>net.clojars.fr33m0nk</groupId>
     <artifactId>optional</artifactId>
-    <version>0.1.3</version>
+    <version>0.1.4</version>
 </dependency>
 ```
 Require at the REPL with:
@@ -369,6 +369,10 @@ Or in your namespace as:
 (optional-util/fn->function inc logger-fn "Uh-oh" true)
 ;;=> #object[fr33m0nk.utility$fn$reify__1942 0x37917038 "fr33m0nk.utility$fn$reify__1942@37917038"]
 ```
+
+## Why would you WANT this?
+
+Look, this is a judgement-free zone, OK? We all have our reasons.
 
 ## License
 
