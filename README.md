@@ -23,8 +23,9 @@ fr33m0nk/optional {:mvn/version "0.1.0"}
 Require at the REPL with:
 
 ```clojure
-(require '[fr33m0nk.optional :as optional]
-         '[fr33m0nk.utility :as optional-util])
+(require 
+  '[fr33m0nk.optional :as optional]
+  '[fr33m0nk.utility :as optional-util])
 ```
 
 Or in your namespace as:
