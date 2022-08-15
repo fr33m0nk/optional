@@ -376,6 +376,6 @@ Look, this is a judgement-free zone, OK? We all have our reasons.
 
 ## License
 
-Copyright © 2022 Prashant Sinha
+Copyright © 2022 **fr33m0nk** (Prashant Sinha)
 
 Distributed under the BSD 3-Clause License
