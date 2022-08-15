@@ -1,4 +1,4 @@
-## optional
+## optional [![Clojars Project](https://img.shields.io/clojars/v/net.clojars.fr33m0nk/optional.svg)](https://clojars.org/net.clojars.fr33m0nk/optional)
 
 `optional` is a simple library that wraps over `java.util.Optional` and offers convenience methods for easy implementation in Clojure code.
 
