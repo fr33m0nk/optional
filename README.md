@@ -120,10 +120,10 @@ Or in your namespace as:
 ```clojure
 (require '[fr33m0nk.optional :as optional])
 
-(optional/has-value? (optional/option-of 10))
+(optional/has-value? (optional/optional-of 10))
 ;;=> true
 
-(optional/has-value? (optional/option-of))
+(optional/has-value? (optional/optional-of))
 ;;=> false
 ```
 
@@ -134,10 +134,10 @@ Or in your namespace as:
 ```clojure
 (require '[fr33m0nk.optional :as optional])
 
-(optional/= (optional/option-of 10) (optional/option-of 10) (optional/option-of 10))
+(optional/= (optional/optional-of 10) (optional/optional-of 10) (optional/optional-of 10))
 ;;=> true
 
-(optional/= (optional/option-of 10) (optional/option-of))
+(optional/= (optional/optional-of 10) (optional/optional-of))
 ;;=> false
 ```
 
@@ -149,10 +149,10 @@ Or in your namespace as:
 ```clojure
 (require '[fr33m0nk.optional :as optional])
 
-(optional/get (optional/option-of 10))
+(optional/get (optional/optional-of 10))
 ;;=> 10
 
-(optional/get (optional/option-of))
+(optional/get (optional/optional-of))
 ;;=> nil
 ```
 
@@ -172,15 +172,15 @@ Or in your namespace as:
          '[fr33m0nk.utility :as optional-util]
          '[clojure.tools.logging :as log])
 
-(optional/filter (partial < 9) (optional/option-of 10))
+(optional/filter (partial < 9) (optional/optional-of 10))
 ;;=> #object[java.util.Optional 0x21e87e90 "Optional[10]"]
 
-(optional/filter (partial > 9) (optional/option-of 10))
+(optional/filter (partial > 9) (optional/optional-of 10))
 ;;=> #object[java.util.Optional 0x200c7eac "Optional.empty"]
 
 ;; Example with logger and exception message
 (let [log-fn (optional-util/macro->fn log/info)]
-  (optional/filter (partial > 9) (optional/option-of "10") log-fn "Uh-Oh!!"))
+  (optional/filter (partial > 9) (optional/optional-of "10") log-fn "Uh-Oh!!"))
 ;;Aug 15, 2022 12:48:14 PM clojure.tools.logging$eval2267$fn__2270 invoke
 ;;INFO: Uh-Oh!! {:msg class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap'), :type java.lang.ClassCastException, :exception {:via [{:type java.lang.ClassCastException, :message "class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')", :at [clojure.lang.Numbers gt "Numbers.java" 261]}], :trace [[clojure.lang.Numbers gt "Numbers.java" 261] [clojure.core$_GT_ invokeStatic "core.clj" 1079] [clojure.core$_GT_ invoke "core.clj" 1072] [clojure.core$partial$fn__5908 invoke "core.clj" 2641] [fr33m0nk.utility$fn$reify__1939 test "utility.clj" 42] [java.util.Optional filter "Optional.java" 218] [fr33m0nk.optional$filter invokeStatic "optional.clj" 59] [fr33m0nk.optional$filter invoke "optional.clj" 46] [user$eval2420 invokeStatic "form-init16753772140548043809.clj" 2] [user$eval2420 invoke "form-init16753772140548043809.clj" 1] [clojure.lang.Compiler eval "Compiler.java" 7194] [clojure.lang.Compiler eval "Compiler.java" 7149] [clojure.core$eval invokeStatic "core.clj" 3215] [clojure.core$eval invoke "core.clj" 3211] [nrepl.middleware.interruptible_eval$evaluate$fn__968$fn__969 invoke "interruptible_eval.clj" 87] [clojure.lang.AFn applyToHelper "AFn.java" 152] [clojure.lang.AFn applyTo "AFn.java" 144] [clojure.core$apply invokeStatic "core.clj" 667] [clojure.core$with_bindings_STAR_ invokeStatic "core.clj" 1990] [clojure.core$with_bindings_STAR_ doInvoke "core.clj" 1990] [clojure.lang.RestFn invoke "RestFn.java" 425] [nrepl.middleware.interruptible_eval$evaluate$fn__968 invoke "interruptible_eval.clj" 87] [clojure.main$repl$read_eval_print__9206$fn__9209 invoke "main.clj" 437] [clojure.main$repl$read_eval_print__9206 invoke "main.clj" 437] [clojure.main$repl$fn__9215 invoke "main.clj" 458] [clojure.main$repl invokeStatic "main.clj" 458] [clojure.main$repl doInvoke "main.clj" 368] [clojure.lang.RestFn invoke "RestFn.java" 1523] [nrepl.middleware.interruptible_eval$evaluate invokeStatic "interruptible_eval.clj" 84] [nrepl.middleware.interruptible_eval$evaluate invoke "interruptible_eval.clj" 56] [nrepl.middleware.interruptible_eval$interruptible_eval$fn__999$fn__1003 invoke "interruptible_eval.clj" 152] [clojure.lang.AFn run "AFn.java" 22] [nrepl.middleware.session$session_exec$main_loop__1067$fn__1071 invoke "session.clj" 202] [nrepl.middleware.session$session_exec$main_loop__1067 invoke "session.clj" 201] [clojure.lang.AFn run "AFn.java" 22] [java.lang.Thread run "Thread.java" 1534]], :cause class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')}}
 ;;=> #object[java.util.Optional 0x200c7eac "Optional.empty"]
@@ -203,19 +203,19 @@ Or in your namespace as:
          '[clojure.tools.logging :as log])
 
 (->> 9
-     optional/option-of
+     optional/optional-of
      (optional/map inc))
 ;;=> #object[java.util.Optional 0x6af3fba3 "Optional[10]"]
 
 (->> "9"
-     optional/option-of
+     optional/optional-of
      (optional/map inc))
 ;;=> #object[java.util.Optional 0x200c7eac "Optional.empty"]
 
 ;; Example with logger and exception message
 (let [log-fn (optional-util/macro->fn log/info)]
   (->> "9"
-       optional/option-of
+       optional/optional-of
        (#(optional/map inc % log-fn "Uh-Oh!!"))))
 ;;Aug 15, 2022 12:51:46 PM clojure.tools.logging$eval2267$fn__2270 invoke
 ;;INFO: Uh-Oh!! {:msg class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap'), :type java.lang.ClassCastException, :exception {:via [{:type java.lang.ClassCastException, :message "class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')", :at [clojure.lang.Numbers inc "Numbers.java" 139]}], :trace [[clojure.lang.Numbers inc "Numbers.java" 139] [clojure.core$inc invokeStatic "core.clj" 929] [clojure.core$inc invoke "core.clj" 924] [fr33m0nk.utility$fn$reify__1942 apply "utility.clj" 61] [java.util.Optional map "Optional.java" 260] [fr33m0nk.optional$map invokeStatic "optional.clj" 73] [fr33m0nk.optional$map invoke "optional.clj" 61] [user$eval2442$fn__2445 invoke "form-init16753772140548043809.clj" 4] [user$eval2442 invokeStatic "form-init16753772140548043809.clj" 4] [user$eval2442 invoke "form-init16753772140548043809.clj" 1] [clojure.lang.Compiler eval "Compiler.java" 7194] [clojure.lang.Compiler eval "Compiler.java" 7149] [clojure.core$eval invokeStatic "core.clj" 3215] [clojure.core$eval invoke "core.clj" 3211] [nrepl.middleware.interruptible_eval$evaluate$fn__968$fn__969 invoke "interruptible_eval.clj" 87] [clojure.lang.AFn applyToHelper "AFn.java" 152] [clojure.lang.AFn applyTo "AFn.java" 144] [clojure.core$apply invokeStatic "core.clj" 667] [clojure.core$with_bindings_STAR_ invokeStatic "core.clj" 1990] [clojure.core$with_bindings_STAR_ doInvoke "core.clj" 1990] [clojure.lang.RestFn invoke "RestFn.java" 425] [nrepl.middleware.interruptible_eval$evaluate$fn__968 invoke "interruptible_eval.clj" 87] [clojure.main$repl$read_eval_print__9206$fn__9209 invoke "main.clj" 437] [clojure.main$repl$read_eval_print__9206 invoke "main.clj" 437] [clojure.main$repl$fn__9215 invoke "main.clj" 458] [clojure.main$repl invokeStatic "main.clj" 458] [clojure.main$repl doInvoke "main.clj" 368] [clojure.lang.RestFn invoke "RestFn.java" 1523] [nrepl.middleware.interruptible_eval$evaluate invokeStatic "interruptible_eval.clj" 84] [nrepl.middleware.interruptible_eval$evaluate invoke "interruptible_eval.clj" 56] [nrepl.middleware.interruptible_eval$interruptible_eval$fn__999$fn__1003 invoke "interruptible_eval.clj" 152] [clojure.lang.AFn run "AFn.java" 22] [nrepl.middleware.session$session_exec$main_loop__1067$fn__1071 invoke "session.clj" 202] [nrepl.middleware.session$session_exec$main_loop__1067 invoke "session.clj" 201] [clojure.lang.AFn run "AFn.java" 22] [java.lang.Thread run "Thread.java" 1534]], :cause class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')}}
@@ -242,32 +242,32 @@ Or in your namespace as:
 
 ;; optional/map returns Optional<Optional<T>> when the mapping fn return Optional<T>
 (->> 9
-     optional/option-of
+     optional/optional-of
      (optional/map (optional/warp-return-in-optional inc)))
 ;;=> #object[java.util.Optional 0x38629e44 "Optional[Optional[10]]"]
 
 ;; optional/flat-map returns Optional<T> even when the mapping fn return Optional<T>
 (->> 9
-     optional/option-of
+     optional/optional-of
      (optional/flat-map (optional/warp-return-in-optional inc)))
 ;;=> #object[java.util.Optional 0x244313a4 "Optional[10]"]
 
 ;; optional/map returns Optional<Optional<T>> when the mapping fn return Optional<T>
 (->> "9"
-     optional/option-of
+     optional/optional-of
      (optional/map (optional/warp-return-in-optional inc)))
 ;;=> #object[java.util.Optional 0x1278dd1b "Optional[Optional.empty]"]
 
 ;; optional/flat-map returns Optional<T> even when the mapping fn return Optional<T>
 (->> "9"
-     optional/option-of
+     optional/optional-of
      (optional/flat-map (optional/warp-return-in-optional inc)))
 ;;=> #object[java.util.Optional 0x200c7eac "Optional.empty"]
 
 ;; Example with logger and exception message when mapping function is returns unboxed value
 (let [log-fn (optional-util/macro->fn log/info)]
   (->> "9"
-       optional/option-of
+       optional/optional-of
        (#(optional/flat-map inc % log-fn "Uh-Oh!!"))))
 ;;Aug 15, 2022 12:59:06 PM clojure.tools.logging$eval2267$fn__2270 invoke
 ;;INFO: Uh-Oh!! {:msg class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap'), :type java.lang.ClassCastException, :exception {:via [{:type java.lang.ClassCastException, :message "class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')", :at [clojure.lang.Numbers inc "Numbers.java" 139]}], :trace [[clojure.lang.Numbers inc "Numbers.java" 139] [clojure.core$inc invokeStatic "core.clj" 929] [clojure.core$inc invoke "core.clj" 924] [fr33m0nk.utility$fn$reify__1942 apply "utility.clj" 61] [java.util.Optional flatMap "Optional.java" 289] [fr33m0nk.optional$flat_map invokeStatic "optional.clj" 89] [fr33m0nk.optional$flat_map invoke "optional.clj" 75] [user$eval2488$fn__2491 invoke "form-init16753772140548043809.clj" 4] [user$eval2488 invokeStatic "form-init16753772140548043809.clj" 4] [user$eval2488 invoke "form-init16753772140548043809.clj" 1] [clojure.lang.Compiler eval "Compiler.java" 7194] [clojure.lang.Compiler eval "Compiler.java" 7149] [clojure.core$eval invokeStatic "core.clj" 3215] [clojure.core$eval invoke "core.clj" 3211] [nrepl.middleware.interruptible_eval$evaluate$fn__968$fn__969 invoke "interruptible_eval.clj" 87] [clojure.lang.AFn applyToHelper "AFn.java" 152] [clojure.lang.AFn applyTo "AFn.java" 144] [clojure.core$apply invokeStatic "core.clj" 667] [clojure.core$with_bindings_STAR_ invokeStatic "core.clj" 1990] [clojure.core$with_bindings_STAR_ doInvoke "core.clj" 1990] [clojure.lang.RestFn invoke "RestFn.java" 425] [nrepl.middleware.interruptible_eval$evaluate$fn__968 invoke "interruptible_eval.clj" 87] [clojure.main$repl$read_eval_print__9206$fn__9209 invoke "main.clj" 437] [clojure.main$repl$read_eval_print__9206 invoke "main.clj" 437] [clojure.main$repl$fn__9215 invoke "main.clj" 458] [clojure.main$repl invokeStatic "main.clj" 458] [clojure.main$repl doInvoke "main.clj" 368] [clojure.lang.RestFn invoke "RestFn.java" 1523] [nrepl.middleware.interruptible_eval$evaluate invokeStatic "interruptible_eval.clj" 84] [nrepl.middleware.interruptible_eval$evaluate invoke "interruptible_eval.clj" 56] [nrepl.middleware.interruptible_eval$interruptible_eval$fn__999$fn__1003 invoke "interruptible_eval.clj" 152] [clojure.lang.AFn run "AFn.java" 22] [nrepl.middleware.session$session_exec$main_loop__1067$fn__1071 invoke "session.clj" 202] [nrepl.middleware.session$session_exec$main_loop__1067 invoke "session.clj" 201] [clojure.lang.AFn run "AFn.java" 22] [java.lang.Thread run "Thread.java" 1534]], :cause class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')}}
@@ -277,7 +277,7 @@ Or in your namespace as:
 (let [log-fn (optional-util/macro->fn log/info)
       mapping-fn (optional/warp-return-in-optional inc log-fn "Uh-Oh!!")]
   (->> "9"
-       optional/option-of
+       optional/optional-of
        (optional/flat-map mapping-fn)))
 ;;Aug 15, 2022 12:57:43 PM clojure.tools.logging$eval2267$fn__2270 invoke
 ;;INFO: Uh-Oh!! {:msg class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap'), :type java.lang.ClassCastException, :exception {:via [{:type java.lang.ClassCastException, :message "class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')", :at [clojure.lang.Numbers inc "Numbers.java" 139]}], :trace [[clojure.lang.Numbers inc "Numbers.java" 139] [clojure.core$inc invokeStatic "core.clj" 929] [clojure.core$inc invoke "core.clj" 924] [clojure.lang.AFn applyToHelper "AFn.java" 154] [clojure.lang.AFn applyTo "AFn.java" 144] [clojure.core$apply invokeStatic "core.clj" 667] [clojure.core$apply invoke "core.clj" 662] [fr33m0nk.optional$warp_return_in_optional$fn__1959 doInvoke "optional.clj" 114] [clojure.lang.RestFn invoke "RestFn.java" 408] [fr33m0nk.utility$fn$reify__1942 apply "utility.clj" 61] [java.util.Optional flatMap "Optional.java" 289] [fr33m0nk.optional$flat_map invokeStatic "optional.clj" 89] [fr33m0nk.optional$flat_map invoke "optional.clj" 75] [fr33m0nk.optional$flat_map invokeStatic "optional.clj" 84] [fr33m0nk.optional$flat_map invoke "optional.clj" 75] [user$eval2478 invokeStatic "form-init16753772140548043809.clj" 5] [user$eval2478 invoke "form-init16753772140548043809.clj" 1] [clojure.lang.Compiler eval "Compiler.java" 7194] [clojure.lang.Compiler eval "Compiler.java" 7149] [clojure.core$eval invokeStatic "core.clj" 3215] [clojure.core$eval invoke "core.clj" 3211] [nrepl.middleware.interruptible_eval$evaluate$fn__968$fn__969 invoke "interruptible_eval.clj" 87] [clojure.lang.AFn applyToHelper "AFn.java" 152] [clojure.lang.AFn applyTo "AFn.java" 144] [clojure.core$apply invokeStatic "core.clj" 667] [clojure.core$with_bindings_STAR_ invokeStatic "core.clj" 1990] [clojure.core$with_bindings_STAR_ doInvoke "core.clj" 1990] [clojure.lang.RestFn invoke "RestFn.java" 425] [nrepl.middleware.interruptible_eval$evaluate$fn__968 invoke "interruptible_eval.clj" 87] [clojure.main$repl$read_eval_print__9206$fn__9209 invoke "main.clj" 437] [clojure.main$repl$read_eval_print__9206 invoke "main.clj" 437] [clojure.main$repl$fn__9215 invoke "main.clj" 458] [clojure.main$repl invokeStatic "main.clj" 458] [clojure.main$repl doInvoke "main.clj" 368] [clojure.lang.RestFn invoke "RestFn.java" 1523] [nrepl.middleware.interruptible_eval$evaluate invokeStatic "interruptible_eval.clj" 84] [nrepl.middleware.interruptible_eval$evaluate invoke "interruptible_eval.clj" 56] [nrepl.middleware.interruptible_eval$interruptible_eval$fn__999$fn__1003 invoke "interruptible_eval.clj" 152] [clojure.lang.AFn run "AFn.java" 22] [nrepl.middleware.session$session_exec$main_loop__1067$fn__1071 invoke "session.clj" 202] [nrepl.middleware.session$session_exec$main_loop__1067 invoke "session.clj" 201] [clojure.lang.AFn run "AFn.java" 22] [java.lang.Thread run "Thread.java" 1534]], :cause class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')}}
@@ -289,7 +289,7 @@ Or in your namespace as:
 #### Usage:
 ```clojure
 (->> 10
-     optional/option-of
+     optional/optional-of
      (optional/map inc)
      (optional/optional->sequence))
 ;;=> (11)
