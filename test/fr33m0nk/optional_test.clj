@@ -2,7 +2,6 @@
   (:require
     [clojure.test :refer [deftest testing is]]
     [fr33m0nk.optional :as op]
-    [clojure.tools.logging :as log]
     [fr33m0nk.utility :as util])
   (:import (java.util Optional)))
 
@@ -71,7 +70,7 @@
     (is (= [2 3 nil]
            (->> [1 2 "3"]
                 (map op/option-of)
-                (map #(op/map inc % (util/macro->fn log/info) "Exception occurred"))
+                (map #(op/map inc % (util/macro->fn clojure.tools.logging/info) "Exception occurred"))
                 (map op/get)))
         "Transforms collection of Optionals and safely executes inc on values contained in Optionals.
         If transforming fn results in exception, empty Optional is returned which is mapped to nil by op/get.
@@ -192,7 +191,7 @@
 
 (deftest optional-fn-return-test
   (testing "wraps a unsafe function and returns Optional of value or empty Optional"
-    (let [log-fn (util/macro->fn log/info)
+    (let [log-fn (util/macro->fn clojure.tools.logging/info)
           wrapped-inc (op/warp-return-in-optional inc log-fn)]
       (is (op/= (op/option-of 10) (wrapped-inc 9))
           "Returns Optional of value if fn execution is successful")
