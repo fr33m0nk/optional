@@ -6,18 +6,18 @@
 All functions are available through the `fr33m0nk.optional` and `fr33m0nk.utility` namespaces. Add the following to your project dependencies:
 - CLI/deps.edn dependency information:
 ```clojure
-fr33m0nk/optional {:mvn/version "0.1.0"}
+fr33m0nk/optional {:mvn/version "0.1.1"}
 ```
 - Leningen
 ```clojure
-[fr33m0nk/optional "0.1.0"]
+[fr33m0nk/optional "0.1.1"]
 ```
 - Maven:
 ```xml
 <dependency>
   <groupId>fr33m0nk/optional</groupId>
   <artifactId>optional</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
 </dependency>
 ```
 Require at the REPL with:
