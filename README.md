@@ -57,7 +57,7 @@ Or in your namespace as:
 ## API Docs
 - Detailed usages of below functions can be found in [tests](https://github.com/fr33m0nk/optional/blob/master/test/fr33m0nk/optional_test.clj)
 - **Collections should not be wrapped in an optional as any collection by itself could represent the absence of data by being empty.** 
-- **If the control flow of code (or it's part) is driven by Exception (or it's subclasses), refrain from using Optionals or this library.**
+- **If the control flow of code (or it's part) is driven by Exception (or it's subclasses), refrain from using Optionals or this library in them.**
 - Read [this](https://stackoverflow.com/questions/26327957/should-java-8-getters-return-optional-type/26328555#26328555) and [this](https://stackoverflow.com/a/73097167/19613290) for right practices of using Optional.
 - ### namespace
 ```clojure 
