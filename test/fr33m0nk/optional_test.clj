@@ -56,7 +56,7 @@
                      op/optional-of) 10)
               (->> 9
                    op/optional-of
-                   (op/map (op/warp-return-in-optional inc))))
+                   (op/map (op/wrap-fn inc))))
         "Transforms value held in option and returns Optional of the Optional returned by transforming fn.
         If boxing of value in nested Optionals is not desired, use flat-map instead.")
 
@@ -130,7 +130,7 @@
   (is (op/= (op/optional-of 10)
             (->> 9
                  op/optional-of
-                 (op/flat-map (op/warp-return-in-optional inc))))
+                 (op/flat-map (op/wrap-fn inc))))
       "Transforms value held in option and returns Optional of resultant value.
       Boxes transformed value in a single Optional instead of nested Optionals unlike map.
       This is useful when fn returns Optional of values and prevents unnecessary nesting of Optionals")
@@ -138,8 +138,8 @@
   (let [expected-collection (->> (range 1 6) (map (partial * 2)) (map op/optional-of))
         test-collection (->> (range 5)
                              (map op/optional-of)
-                             (map (partial op/flat-map (op/warp-return-in-optional inc)))
-                             (map (partial op/flat-map (op/warp-return-in-optional (partial * 2)))))]
+                             (map (partial op/flat-map (op/wrap-fn inc)))
+                             (map (partial op/flat-map (op/wrap-fn (partial * 2)))))]
     (is (every? true? (map op/= expected-collection test-collection))
         "Transforms a Collection of optionals using mapping fn returning Optional<T> and returns Optional<T>
         op/map would have returned nested Optionals e.g. Optional<Optional<T>>"))
@@ -159,7 +159,7 @@
             (->> (range 10)
                  (map op/optional-of)
                  op/optional-of
-                 (op/flat-map (op/warp-return-in-optional (partial map (partial op/map inc))))))
+                 (op/flat-map (op/wrap-fn (partial map (partial op/map inc))))))
       "Transforms Optional of a collection of Optionals using map and returns Optional of same data structure"))
 
 (deftest optional->sequence-test
@@ -190,14 +190,14 @@
                 op/optional-of
                 op/optional->sequence)))))
 
-(deftest warp-return-in-optional-test
+(deftest wrap-fn-test
   (testing "wraps a unsafe function and returns Optional of value or empty Optional"
-    (let [
+    (let [wrapped-inc (op/wrap-fn inc println)
           ;;Following is the example of how a logger macro can be used
           ;log-fn (util/macro->fn clojure.tools.logging/info)
-          ;wrapped-inc (op/warp-return-in-optional inc log-fn)
+          ;wrapped-inc (op/wrap-fn inc log-fn)
           ;; Following is the example of using logging fn
-          wrapped-inc (op/warp-return-in-optional inc println)]
+          ]
       (is (op/= (op/optional-of 10) (wrapped-inc 9))
           "Returns Optional of value if fn execution is successful")
 

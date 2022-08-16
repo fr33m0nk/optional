@@ -96,7 +96,7 @@
       .iterator
       iterator-seq))
 
-(defn warp-return-in-optional
+(defn wrap-fn
   "takes a Clojure Fn and returns a Clojure Fn that is wrapped in try catch block
   returned fn when executed returns Optional of value if application was successful
   or empty Optional when execution of supplied function throws an Exception
@@ -105,9 +105,9 @@
   e.g. (def logger-fn (utils/macro->fn clojure.tools.logging/info))
   The reason is Clojure functions can't take macros as argument"
   ([f]
-   (warp-return-in-optional f nil nil))
+   (wrap-fn f nil nil))
   ([f logger]
-   (warp-return-in-optional f logger nil))
+   (wrap-fn f logger nil))
   ([f logger log-exception-message]
    (fn [& args]
      (try

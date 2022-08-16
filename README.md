@@ -6,18 +6,18 @@
 All functions are available through the `fr33m0nk.optional` and `fr33m0nk.utility` namespaces. Add the following to your project dependencies:
 - CLI/deps.edn dependency information:
 ```clojure
-net.clojars.fr33m0nk/optional {:mvn/version "0.1.4"}
+net.clojars.fr33m0nk/optional {:mvn/version "0.1.5"}
 ```
 - Leningen/Boot
 ```clojure
-[net.clojars.fr33m0nk/optional "0.1.4"]
+[net.clojars.fr33m0nk/optional "0.1.5"]
 ```
 - Maven:
 ```xml
 <dependency>
     <groupId>net.clojars.fr33m0nk</groupId>
     <artifactId>optional</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.5</version>
 </dependency>
 ```
 Require at the REPL with:
@@ -41,7 +41,7 @@ Or in your namespace as:
 | Name                                                                    | Description                                                                                                                                                                    |
 |-------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`fr33m0nk.optional/optional-of`](#optional-of)                         | Returns Optional of supplied value                                                                                                                                             |
-| [`fr33m0nk.optional/warp-return-in-optional`](#warp-return-in-optional) | Wraps Clojure fn `try catch` block to return Optional values                                                                                                                   |
+| [`fr33m0nk.optional/wrap-fn`](#wrap-fn) | Wraps Clojure fn `try catch` block to return Optional values                                                                                                                   |
 | [`fr33m0nk.optional/has-value?`](#has-value?)                           | Returns boolean based on whether Optional has value or is empty                                                                                                                |
 | [`fr33m0nk.optional/=`](#=)                                             | Like `core/=` for Optionals                                                                                                                                                    |
 | [`fr33m0nk.optional/get`](#get)                                         | Retrieves the value boxed in Optional                                                                                                                                          |
@@ -79,7 +79,7 @@ Or in your namespace as:
 ;;=> #object[java.util.Optional 0x1341289b "Optional.empty"]
 ```
 
-### `warp-return-in-optional`
+### `wrap-fn`
 - Take a Clojure Fn `f` and returns a Clojure Fn that is wrapped in try catch block 
 - Returned fn when executed returns Optional of value if application was successful or empty Optional when execution of supplied function throws an Exception
 - Multi arity versions also take a logger
@@ -100,13 +100,13 @@ Or in your namespace as:
 ;;class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')
 
 ;; Example without logger
-(let [wrapped-inc (optional/warp-return-in-optional inc)]
+(let [wrapped-inc (optional/wrap-fn inc)]
   (wrapped-inc 1))
 ;;=> #object[java.util.Optional 0x57226b51 "Optional[2]"]
 
 ;; Example with logger
 (let [log-fn (optional-util/macro->fn clojure.tools.logging/info)
-      wrapped-inc (optional/warp-return-in-optional inc log-fn)]
+      wrapped-inc (optional/wrap-fn inc log-fn)]
   (wrapped-inc "1"))
 ;; Aug 15, 2022 12:32:04 PM clojure.tools.logging$eval2267$fn__2270 invoke
 ;; INFO: {:msg class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap'), :type java.lang.ClassCastException, :exception {:via [{:type java.lang.ClassCastException, :message "class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')", :at [clojure.lang.Numbers inc "Numbers.java" 139]}], :trace [[clojure.lang.Numbers inc "Numbers.java" 139] [clojure.core$inc invokeStatic "core.clj" 929] [clojure.core$inc invoke "core.clj" 924] [clojure.lang.AFn applyToHelper "AFn.java" 154] [clojure.lang.AFn applyTo "AFn.java" 144] [clojure.core$apply invokeStatic "core.clj" 667] [clojure.core$apply invoke "core.clj" 662] [fr33m0nk.optional$warp_return_in_optional$fn__1959 doInvoke "optional.clj" 114] [clojure.lang.RestFn invoke "RestFn.java" 408] [user$eval2280 invokeStatic "form-init16753772140548043809.clj" 3] [user$eval2280 invoke "form-init16753772140548043809.clj" 1] [clojure.lang.Compiler eval "Compiler.java" 7194] [clojure.lang.Compiler eval "Compiler.java" 7149] [clojure.core$eval invokeStatic "core.clj" 3215] [clojure.core$eval invoke "core.clj" 3211] [nrepl.middleware.interruptible_eval$evaluate$fn__968$fn__969 invoke "interruptible_eval.clj" 87] [clojure.lang.AFn applyToHelper "AFn.java" 152] [clojure.lang.AFn applyTo "AFn.java" 144] [clojure.core$apply invokeStatic "core.clj" 667] [clojure.core$with_bindings_STAR_ invokeStatic "core.clj" 1990] [clojure.core$with_bindings_STAR_ doInvoke "core.clj" 1990] [clojure.lang.RestFn invoke "RestFn.java" 425] [nrepl.middleware.interruptible_eval$evaluate$fn__968 invoke "interruptible_eval.clj" 87] [clojure.main$repl$read_eval_print__9206$fn__9209 invoke "main.clj" 437] [clojure.main$repl$read_eval_print__9206 invoke "main.clj" 437] [clojure.main$repl$fn__9215 invoke "main.clj" 458] [clojure.main$repl invokeStatic "main.clj" 458] [clojure.main$repl doInvoke "main.clj" 368] [clojure.lang.RestFn invoke "RestFn.java" 1523] [nrepl.middleware.interruptible_eval$evaluate invokeStatic "interruptible_eval.clj" 84] [nrepl.middleware.interruptible_eval$evaluate invoke "interruptible_eval.clj" 56] [nrepl.middleware.interruptible_eval$interruptible_eval$fn__999$fn__1003 invoke "interruptible_eval.clj" 152] [clojure.lang.AFn run "AFn.java" 22] [nrepl.middleware.session$session_exec$main_loop__1067$fn__1071 invoke "session.clj" 202] [nrepl.middleware.session$session_exec$main_loop__1067 invoke "session.clj" 201] [clojure.lang.AFn run "AFn.java" 22] [java.lang.Thread run "Thread.java" 1534]], :cause class java.lang.String cannot be cast to class java.lang.Number (java.lang.String and java.lang.Number are in module java.base of loader 'bootstrap')}}
@@ -243,25 +243,25 @@ Or in your namespace as:
 ;; optional/map returns Optional<Optional<T>> when the mapping fn return Optional<T>
 (->> 9
      optional/optional-of
-     (optional/map (optional/warp-return-in-optional inc)))
+     (optional/map (optional/wrap-fn inc)))
 ;;=> #object[java.util.Optional 0x38629e44 "Optional[Optional[10]]"]
 
 ;; optional/flat-map returns Optional<T> even when the mapping fn return Optional<T>
 (->> 9
      optional/optional-of
-     (optional/flat-map (optional/warp-return-in-optional inc)))
+     (optional/flat-map (optional/wrap-fn inc)))
 ;;=> #object[java.util.Optional 0x244313a4 "Optional[10]"]
 
 ;; optional/map returns Optional<Optional<T>> when the mapping fn return Optional<T>
 (->> "9"
      optional/optional-of
-     (optional/map (optional/warp-return-in-optional inc)))
+     (optional/map (optional/wrap-fn inc)))
 ;;=> #object[java.util.Optional 0x1278dd1b "Optional[Optional.empty]"]
 
 ;; optional/flat-map returns Optional<T> even when the mapping fn return Optional<T>
 (->> "9"
      optional/optional-of
-     (optional/flat-map (optional/warp-return-in-optional inc)))
+     (optional/flat-map (optional/wrap-fn inc)))
 ;;=> #object[java.util.Optional 0x200c7eac "Optional.empty"]
 
 ;; Example with logger and exception message when mapping function is returns unboxed value
@@ -275,7 +275,7 @@ Or in your namespace as:
 
 ;; Example with logger and exception message when mapping function is returns Optional<T>
 (let [log-fn (optional-util/macro->fn log/info)
-      mapping-fn (optional/warp-return-in-optional inc log-fn "Uh-Oh!!")]
+      mapping-fn (optional/wrap-fn inc log-fn "Uh-Oh!!")]
   (->> "9"
        optional/optional-of
        (optional/flat-map mapping-fn)))
