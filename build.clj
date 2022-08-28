@@ -4,7 +4,7 @@
             [org.corfield.build :as bb]))
 
 (def lib 'net.clojars.fr33m0nk/optional)
-(def version "0.1.6")
+(def version "0.1.7")
 #_ ; alternatively, use MAJOR.MINOR.COMMITS:
 #_(def version (format "1.0.%s" (b/git-count-revs nil)))
 

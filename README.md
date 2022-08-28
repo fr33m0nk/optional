@@ -6,18 +6,18 @@
 All functions are available through the `fr33m0nk.optional` and `fr33m0nk.utility` namespaces. Add the following to your project dependencies:
 - CLI/deps.edn dependency information:
 ```clojure
-net.clojars.fr33m0nk/optional {:mvn/version "0.1.6"}
+net.clojars.fr33m0nk/optional {:mvn/version "0.1.7"}
 ```
 - Leningen/Boot
 ```clojure
-[net.clojars.fr33m0nk/optional "0.1.6"]
+[net.clojars.fr33m0nk/optional "0.1.7"]
 ```
 - Maven:
 ```xml
 <dependency>
     <groupId>net.clojars.fr33m0nk</groupId>
     <artifactId>optional</artifactId>
-    <version>0.1.6</version>
+    <version>0.1.7</version>
 </dependency>
 ```
 Require at the REPL with:
@@ -48,8 +48,6 @@ Or in your namespace as:
 | [`fr33m0nk.optional/filter`](#filter)                         | Returns Optional value satisfying predicate                                                                                                                                    |
 | [`fr33m0nk.optional/map`](#map)                               | Transforms value boxed in Optional by applying supplied mapping function and returns `Optional<T>`                                                                             |
 | [`fr33m0nk.optional/flat-map`](#flat-map)                     | Transforms value boxed in Optional by applying supplied mapping function that themselves returns `Optional<T>`.<br/>Un-nests `Optional<Optional<T>>` and returns `Optional<T>` |
-| [`fr33m0nk.optional/optional->sequence`](#optional->sequence) | Returns Clojure sequence of unboxed value from Optional<T>                                                                                                                     |
-| [`fr33m0nk.utility/exception->map`](#exception->map)          | Returns exception map from supplied Exception object                                                                                                                           |
 | [`fr33m0nk.utility/fn->predicate`](#fn->predicate)            | Takes a Clojure predicate function and returns a `java.util.function.Predicate` instance                                                                                       |
 | [`fr33m0nk.utility/fn->function`](#fn->function)              | Takes a Clojure function for mapping and returns a `java.util.function.Function` instance                                                                                      |
 
