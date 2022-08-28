@@ -3,20 +3,8 @@
     [clojure.test :refer [deftest testing is]]
     [fr33m0nk.optional :as op]
     [clojure.tools.logging])
-  (:import (clojure.lang IEditableCollection)
-           (java.util Optional)))
-
-(defn- update-vals
-  "Applies f to the values in map m and returns updated map"
-  [m f]
-  (with-meta
-    (persistent!
-      (reduce-kv (fn [acc k v] (assoc! acc k (f v)))
-                 (if (instance? IEditableCollection m)
-                   (transient m)
-                   (transient {}))
-                 m))
-    (meta m)))
+  (:import
+    (java.util Optional)))
 
 (deftest optional-of-test
   (testing "returns an instance of Optional of value"
