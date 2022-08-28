@@ -46,46 +46,40 @@
 (defn filter
   "returns empty Optional if predicate evaluates to false or predicate throws Exception or
   returns Optional with value if predicate evaluates to true
-  Multi arity versions also take a logger
-  If logger is a macro e.g. clojure.tools.logging, create logger-fn using utils/macro->fn and supply that as argument
-  e.g. (def logger-fn (utils/macro->fn clojure.tools.logging/info))
+  Multi arity versions also take an exception handler. This can be a logger as well.
+  If logger is a macro e.g. clojure.tools.logging, create logger-fn
+  e.g. (def logger-fn #(clojure.tools.logging/info % \"Exception occurred\"))
   The reason is Clojure functions can't take macros as argument"
   ([predicate optional]
-   (filter predicate optional nil nil))
-  ([predicate optional logger-fn]
-   (filter predicate optional logger-fn nil))
-  ([predicate ^Optional optional logger-fn log-exception-message]
-   (->> (util/fn->predicate predicate logger-fn log-exception-message)
+   (filter predicate optional nil))
+  ([predicate ^Optional optional exception-handler]
+   (->> (util/fn->predicate predicate exception-handler)
         (.filter optional))))
 
 (defn map
   "returns empty Optional if f throws Exception or returns Optional with transformed value if f was applied successfully
-  Multi arity versions also take a logger
-  If logger is a macro e.g. clojure.tools.logging, create logger-fn using utils/macro->fn and supply that as argument
-  e.g. (def logger-fn (utils/macro->fn clojure.tools.logging/info))
+  Multi arity versions also take an exception handler. This can be a logger as well.
+  If logger is a macro e.g. clojure.tools.logging, create logger-fn
+  e.g. (def logger-fn #(clojure.tools.logging/info % \"Exception occurred\"))
   The reason is Clojure functions can't take macros as argument"
   ([f optional]
-   (map f optional nil nil))
-  ([f optional logger-fn]
-   (map f optional logger-fn nil))
-  ([f ^Optional optional logger-fn log-exception-message]
-   (->> (util/fn->function f logger-fn log-exception-message)
+   (map f optional nil))
+  ([f ^Optional optional exception-handler]
+   (->> (util/fn->function f exception-handler)
         (.map optional))))
 
 (defn flat-map
   "returns empty Optional if f throws Exception or returns Optional with transformed value if f transforms value
   Un-nests Optionals and returns a single Optional e.g. Optional<Optional<T>> -> Optional<T>
   This is useful when working with fn that return Optional values
-  Multi arity versions also take a logger
-  If logger is a macro e.g. clojure.tools.logging, create logger-fn using utils/macro->fn and supply that as argument
-  e.g. (def logger-fn (utils/macro->fn clojure.tools.logging/info))
+  Multi arity versions also take an exception handler. This can be a logger as well.
+  If logger is a macro e.g. clojure.tools.logging, create logger-fn
+  e.g. (def logger-fn #(clojure.tools.logging/info % \"Exception occurred\"))
   The reason is Clojure functions can't take macros as argument"
   ([f optional]
-   (flat-map f optional nil nil))
-  ([f optional logger-fn]
-   (flat-map f optional logger-fn nil))
-  ([f ^Optional optional logger-fn log-exception-message]
-   (->> (util/fn->function f logger-fn log-exception-message true)
+   (flat-map f optional nil))
+  ([f optional exception-handler]
+   (->> (util/fn->function f exception-handler true)
         (.flatMap optional))))
 
 (defn optional->sequence
@@ -101,19 +95,17 @@
   returned fn when executed returns Optional of value if application was successful
   or empty Optional when execution of supplied function throws an Exception
   Multi arity versions also take a logger
-  If logger is a macro e.g. clojure.tools.logging, create logger-fn using utils/macro->fn and supply that as argument
-  e.g. (def logger-fn (utils/macro->fn clojure.tools.logging/info))
+  If logger is a macro e.g. clojure.tools.logging, create logger-fn
+  e.g. (def logger-fn #(clojure.tools.logging/info % \"Exception occurred\"))
   The reason is Clojure functions can't take macros as argument"
   ([f]
-   (wrap-fn f nil nil))
-  ([f logger]
-   (wrap-fn f logger nil))
-  ([f logger log-exception-message]
+   (wrap-fn f nil))
+  ([f exception-handler]
    (fn [& args]
      (try
        (optional-of (apply f args))
        (catch Exception ex
-         (when logger
-           (let [logging-args (filterv some? [log-exception-message (util/exception->map ex)])]
-             (apply logger logging-args)))
-         (optional-of))))))
+         (let [handled-val (some-> exception-handler (#(% ex)))]
+           (if handled-val
+             (optional-of handled-val)
+             (optional-of))))))))

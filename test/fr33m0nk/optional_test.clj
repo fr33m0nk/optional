@@ -2,8 +2,21 @@
   (:require
     [clojure.test :refer [deftest testing is]]
     [fr33m0nk.optional :as op]
-    [fr33m0nk.utility :as util])
-  (:import (java.util Optional)))
+    [clojure.tools.logging])
+  (:import (clojure.lang IEditableCollection)
+           (java.util Optional)))
+
+(defn- update-vals
+  "Applies f to the values in map m and returns updated map"
+  [m f]
+  (with-meta
+    (persistent!
+      (reduce-kv (fn [acc k v] (assoc! acc k (f v)))
+                 (if (instance? IEditableCollection m)
+                   (transient m)
+                   (transient {}))
+                 m))
+    (meta m)))
 
 (deftest optional-of-test
   (testing "returns an instance of Optional of value"
@@ -67,15 +80,16 @@
                 (map op/get)))
         "Transforms collection of Optionals and safely executes inc on values contained in Optionals")
 
-    (is (= [2 3 nil]
-           (->> [1 2 "3"]
-                (map op/optional-of)
-                #_(map #(op/map inc % (util/macro->fn clojure.tools.logging/info) "Exception occurred")) ;; A logger macro can be used like this
-                (map #(op/map inc % println "Exception occurred")) ;; A logger function can be used like this
-                (map op/get)))
-        "Transforms collection of Optionals and safely executes inc on values contained in Optionals.
-        If transforming fn results in exception, empty Optional is returned which is mapped to nil by op/get.
-        Also uses logger from clojure.tools.logging and wraps the macro in a function as macros can't be passed to a function")
+    (let [log-fn #(clojure.tools.logging/info % "Exception occurred")]
+      (is (= [2 3 nil]
+             (->> [1 2 "3"]
+                  (map op/optional-of)
+                  (map #(op/map inc % log-fn))              ;; A logger macro can be used like this
+                  #_(map #(op/map inc % (partial println "Exception occurred"))) ;; A logger function can be used like this
+                  (map op/get)))
+          "Transforms collection of Optionals and safely executes inc on values contained in Optionals.
+          If transforming fn results in exception, empty Optional is returned which is mapped to nil by op/get.
+          Also uses logger from clojure.tools.logging and wraps the macro in a function as macros can't be passed to a function"))
 
     ;; COLLECTIONS SHOULD NOT BE WRAPPED IN AN OPTIONAL AS ANY COLLECTION BY ITSELF COULD REPRESENT THE ABSENCE OF DATA BY BEING EMPTY.
     ;; Read following for right practices of using Optional
@@ -92,13 +106,13 @@
     (is (op/= (op/optional-of {:a 2 :b 3})
               (->> {:a 1 :b 2}
                    op/optional-of
-                   (op/map #(#'util/update-vals % inc))))
+                   (op/map #(update-vals % inc))))
         "Transforms Options of Map and returns same data structure")
 
     (is (op/= (op/optional-of [{:a 2 :b 3} {:c 2 :d 3}])
               (->> [{:a 1 :b 2} {:c 1 :d 2}]
                    op/optional-of
-                   (op/map (partial mapv #(#'util/update-vals % inc)))))
+                   (op/map (partial mapv #(update-vals % inc)))))
         "Transform Optional of collection of Maps using map and returns Optional of same data structure")
 
     (is (op/= (->> (range 10) (map (comp op/optional-of inc)) op/optional-of)
@@ -123,7 +137,7 @@
     (is (false?
           (->> {:a "1" :b "2"}
                op/optional-of
-               (op/map #(#'util/update-vals % inc))
+               (op/map #(update-vals % inc))
                op/has-value?)))))
 
 (deftest flat-map-test
@@ -192,12 +206,8 @@
 
 (deftest wrap-fn-test
   (testing "wraps a unsafe function and returns Optional of value or empty Optional"
-    (let [wrapped-inc (op/wrap-fn inc println)
-          ;;Following is the example of how a logger macro can be used
-          ;log-fn (util/macro->fn clojure.tools.logging/info)
-          ;wrapped-inc (op/wrap-fn inc log-fn)
-          ;; Following is the example of using logging fn
-          ]
+    (let [log-fn #(clojure.tools.logging/info % "Exception occurred")
+          wrapped-inc (op/wrap-fn inc log-fn)]
       (is (op/= (op/optional-of 10) (wrapped-inc 9))
           "Returns Optional of value if fn execution is successful")
 
